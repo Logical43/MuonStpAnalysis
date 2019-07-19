@@ -17,7 +17,8 @@ class MST:
     # initialiser with number of disks and thicknesses
     # number of disks (nDisksOnAxis) -> number of disks in x, y, z direction, could be uniform
     # thicknesses -> array of individual thicknesses 
-    def __init__(self, nDisksOnAxis, thicknesses,gen=1,id=1):
+    # radius -> array of disk radii. Default set to dim/nDisks
+    def __init__(self, nDisksOnAxis, thicknesses, radius=None, gen=1,id=1):
         # generation and id of the genetic algorithm
         self.gen=gen
         self.id=id
@@ -30,6 +31,12 @@ class MST:
             else:
                 self.nDisksOnAxis = nDisksOnAxis
                 self.thicknesses = thicknesses
+
+        # if the radius isn't set, set it        
+        if radius == None:
+            radius = dimension/nDisksOnAxis
+
+        self.radius = radius
 
         # 3d nDisksOnAxis should be of the form of [x,y,z]
         else:
@@ -58,6 +65,10 @@ class MST:
 
     def change_weight(self,lamda):
         self.lamda = lamda
+
+    # changing dimension
+    def change_radius(self, newRadius):
+        self.radius = newRadius
 
     # defining positions to individual target disks
     def def_position(self):
@@ -112,7 +123,12 @@ class MST:
                 newMSTS.write("{parent}/Count     nTargets = "+str(self.nTargets)+"\n")
                 for line in itertools.islice(MSTS,1,33):
                     newMSTS.write(line)
-                newMSTS.write("{parent}/Dimension (i<[nTargets]) TargetDisk:OuterR   = "+str(400/self.nDisksOnAxis)+"*mm\n")
+                if [self.radius.size==1]:
+                    newMSTS.write("{parent}/Dimension (i<[nTargets]) TargetDisk:OuterR   = "+str(self.radius)+"*mm\n")
+                else: 
+                    rCounter = 0
+                    for i in self.radius:
+                        newMSTS.write("{parent}/Dimension (i="+str(rCounter)+") TargetDisk:OuterR = "+str(i)+"*mm\n")
                 for line in itertools.islice(MSTS,1,2):
                     newMSTS.write(line)
                 
