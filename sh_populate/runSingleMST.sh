@@ -4,13 +4,17 @@
 # reading the positional variables
 export GEN=$1
 export ID=$2
-start=$(date +"%T")
-
-echo "starting MST generation: " $GEN " id: " $ID
+start_time=$(date +"%T")
+start_date=$(date +"%F")
+echo "-------------------------"
+echo "Start date: $start_date"
+echo "Start time: $start_time"
+echo "running MST generation: " $GEN " id: " $ID
+echo "-------------------------"
 
 # exporting the existing import file for muon events only
 export INPUT_FILE=/vols/comet/users/sy5118/newBuild/OfflineProject/packages/MuonStpAnalysis/populate/strippedMuon.rootracker
-export SH_NUM_EVENTS=100
+export SH_NUM_EVENTS=200
 
 # creating output directory wrt generation and individual id
 export OUTPUT_DIR=$ICEDUSTROOT/OfflineProject/packages/MuonStpAnalysis/populate/runOutput/generation${GEN}/MST$ID
@@ -34,8 +38,12 @@ for i in $SIMG4ROOT/geometry_macros/GA_MST/generated_MST$GEN/MSTS_obj_$ID.macro;
 done
 
 # timestamping
-end=$(date +"%T")
+end_time=$(date +"%T")
+end_date=$(date +"%F")
 echo "-------------------------"
-echo "Start time: $start"
-echo "End time: $end"
+echo "Start date: $start_date"
+echo "End date: $end_date"
+echo "Start time: $start_time"
+echo "End time: $end_time"
+echo "finished running MST generation: " $GEN " id: " $ID
 echo "-------------------------"

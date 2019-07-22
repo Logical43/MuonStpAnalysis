@@ -23,6 +23,12 @@ class MST:
         self.gen=gen
         self.id=id
 
+        # if the radius isn't set, set it        
+        if radius == None:
+            radius = dimension/nDisksOnAxis
+
+        self.radius = radius
+
         # if the disk distribution is uniform
         if np.array([nDisksOnAxis]).size == 1:
             # check for correct number of disks...
@@ -31,12 +37,6 @@ class MST:
             else:
                 self.nDisksOnAxis = nDisksOnAxis
                 self.thicknesses = thicknesses
-
-        # if the radius isn't set, set it        
-        if radius == None:
-            radius = dimension/nDisksOnAxis
-
-        self.radius = radius
 
         # 3d nDisksOnAxis should be of the form of [x,y,z]
         else:
@@ -123,7 +123,7 @@ class MST:
                 newMSTS.write("{parent}/Count     nTargets = "+str(self.nTargets)+"\n")
                 for line in itertools.islice(MSTS,1,33):
                     newMSTS.write(line)
-                if [self.radius.size==1]:
+                if np.array([self.radius]).size==1:
                     newMSTS.write("{parent}/Dimension (i<[nTargets]) TargetDisk:OuterR   = "+str(self.radius)+"*mm\n")
                 else: 
                     rCounter = 0
